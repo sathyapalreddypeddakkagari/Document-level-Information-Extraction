@@ -1,20 +1,34 @@
-# Import the Groq API client
+# # Import the Groq API client
+# from groq import Groq
+#
+# # Import utilities
+# import json
+# import os
+# from dotenv import load_dotenv  # To load environment variables from a .env file
+#
+# # Step 1: Load API Key
+# # Load environment variables from the .env file
+# load_dotenv()
+#
+# # Retrieve the GROQ API key from environment variables
+# key = os.getenv("GROQ_API_KEY")
+#
+# # Initialize the Groq client using the API key
+# client = Groq(api_key=key)
+
+import os
+import json
+import streamlit as st
 from groq import Groq
 
-# Import utilities
-import json
-import os
-from dotenv import load_dotenv  # To load environment variables from a .env file
+# Read API key from Streamlit Secrets (Cloud) or .env (local)
+GROQ_API_KEY = st.secrets.get("GROQ_API_KEY") or os.getenv("GROQ_API_KEY")
 
-# Step 1: Load API Key
-# Load environment variables from the .env file
-load_dotenv()
+if not GROQ_API_KEY:
+    raise RuntimeError("GROQ_API_KEY not found. Set it in Streamlit Secrets or .env")
 
-# Retrieve the GROQ API key from environment variables
-key = os.getenv("GROQ_API_KEY")
+client = Groq(api_key=GROQ_API_KEY)
 
-# Initialize the Groq client using the API key
-client = Groq(api_key=key)
 
 # Step 2: Load and Preprocess Training Examples
 # Function to load all JSON training files from a given folder
